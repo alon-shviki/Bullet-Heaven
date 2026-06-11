@@ -1,0 +1,47 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(~/.microsoft/usersecrets/**)",
+      "Read(**/.env)",
+      "Read(**/.env.*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // \"\"' | { read -r f; case \"$f\" in */Migrations/*|*/bin/*|*/obj/*|*package-lock.json) echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Generated file — never hand-edit. Migrations: use dotnet ef migrations add (see .claude/skills/db-migrate). bin/obj: build artifacts. package-lock.json: run npm instead.\"}}' ;; *) exit 0 ;; esac; }",
+            "statusMessage": "Checking generated-file guard..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // \"\"' | { read -r f; case \"$f\" in *.cs|*.razor) touch /tmp/bullet-heaven-build-pending; echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"PIPELINE MANDATORY: code file changed — follow .claude/rules/pipeline.md (qa-reviewer → test-generator → docs-generator; + playwright-e2e for .razor/Game.Render.cs) before responding.\"}}' ;; *) exit 0 ;; esac; }",
+            "statusMessage": "Enforcing QA pipeline..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); [ \"$(printf '%s' \"$input\" | jq -r '.stop_hook_active // false')\" = \"true\" ] && exit 0; [ -f /tmp/bullet-heaven-build-pending ] || exit 0; rm -f /tmp/bullet-heaven-build-pending; out=$(cd /home/alon/Desktop/Bullet-Heaven && dotnet build BulletHeaven.slnx --nologo -v q 2>&1) || { printf 'BUILD GATE FAILED — the solution does not compile. Fix before finishing:\\n%s\\n' \"$out\" >&2; exit 2; }",
+            "timeout": 180,
+            "statusMessage": "Build gate: compiling solution..."
+          }
+        ]
+      }
+    ]
+  }
+}

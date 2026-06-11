@@ -1,0 +1,39 @@
+services:
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB:       bulletheaven
+      POSTGRES_USER:     bh_user
+      POSTGRES_PASSWORD: bh_pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bh_user -d bulletheaven"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: BulletHeaven.Server/Dockerfile
+    environment:
+      ConnectionStrings__Default: "Host=db;Database=bulletheaven;Username=bh_user;Password=bh_pass"
+      Jwt__Key: "change-me-in-prod-must-be-32chars!"
+      ASPNETCORE_URLS: "http://+:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  client:
+    build:
+      context: .
+      dockerfile: BulletHeaven.Client/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

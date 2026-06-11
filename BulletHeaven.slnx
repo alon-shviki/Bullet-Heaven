@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BulletHeaven.Client/BulletHeaven.Client.csproj" />
+  <Project Path="BulletHeaven.Server/BulletHeaven.Server.csproj" />
+</Solution>

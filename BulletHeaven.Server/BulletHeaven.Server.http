@@ -1,0 +1,6 @@
+@BulletHeaven.Server_HostAddress = http://localhost:5009
+
+GET {{BulletHeaven.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

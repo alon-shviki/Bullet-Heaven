@@ -1,0 +1,8 @@
+- generic [ref=e17]:
+  - generic [ref=e18]: SIGN IN
+  - generic [ref=e19]:
+    - textbox "Username" [ref=e20]
+    - textbox "Password" [ref=e21]
+    - button "Sign In" [ref=e22]
+    - button "No account? Create one" [ref=e23] [cursor=pointer]
+  - button "← Back" [ref=e24] [cursor=pointer]
