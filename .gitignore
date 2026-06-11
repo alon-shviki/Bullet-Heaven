@@ -1,0 +1,34 @@
+# Build outputs
+bin/
+obj/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# .NET user secrets
+**/appsettings.Development.json
+**/*.user
+
+# Environment
+.env
+.env.*
+
+# Playwright CLI session snapshots
+.playwright-cli/
+
+# E2E test results
+e2e/test-results/
+e2e/playwright-report/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vs/
+.vscode/
+*.swp
+
+# Local Claude settings (tokens, personal overrides)
+.claude/settings.local.json
