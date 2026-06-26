@@ -30,5 +30,8 @@ Thumbs.db
 .vscode/
 *.swp
 
+# Obsidian — personal settings, workspace state, cache
+.obsidian/
+
 # Local Claude settings (tokens, personal overrides)
 .claude/settings.local.json
