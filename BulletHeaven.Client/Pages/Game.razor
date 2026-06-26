@@ -34,46 +34,16 @@
                 <div class="signed-in-badge">
                     <span class="signed-in-dot"></span>
                     Signed in as <b>@_loggedInUser</b>
-                    <button class="btn-text" @onclick="Logout">Sign out</button>
                 </div>
             }
             else
             {
-                <button class="btn-login" @onclick='() => { _isRegistering = false; _authUsername = ""; _authPassword = ""; _authError = null; _state = GameState.Login; StateHasChanged(); }'>
-                    Sign in / Create Account
-                </button>
+                <p class="menu-sub" style="font-size:0.85rem;margin-top:4px;color:#64748b">Sign in at the portal to save scores</p>
             }
             @if (_highScore > 0)
             {
                 <p class="menu-best">Best score: @_highScore.ToString("N0")</p>
             }
-        </div>
-    }
-
-    @if (_state == GameState.Login)
-    {
-        <div class="menu-overlay">
-            <div class="menu-logo" style="font-size:2rem">
-                @(_isRegistering ? "CREATE ACCOUNT" : "SIGN IN")
-            </div>
-            <div class="auth-form">
-                <input class="auth-input" type="text" placeholder="Username"
-                       maxlength="32" @bind="_authUsername" @bind:event="oninput" />
-                <input class="auth-input" type="password" placeholder="Password"
-                       @bind="_authPassword" @bind:event="oninput"
-                       @onkeydown="@(async (e) => { if (e.Key == "Enter") await SubmitAuthAsync(); })" />
-                @if (_authError != null)
-                {
-                    <p class="auth-error">@_authError</p>
-                }
-                <button class="btn-normal" @onclick="SubmitAuthAsync">
-                    @(_isRegistering ? "Create Account" : "Sign In")
-                </button>
-                <button class="btn-text" @onclick='() => { _isRegistering = !_isRegistering; _authError = null; StateHasChanged(); }'>
-                    @(_isRegistering ? "Already have an account? Sign in" : "No account? Create one")
-                </button>
-            </div>
-            <button class="btn-back" @onclick='() => { _state = GameState.MainMenu; StateHasChanged(); }'>← Back</button>
         </div>
     }
 
@@ -346,18 +316,13 @@
     private Canvas2DContext _ctx = default!;
     private DotNetObjectReference<Game> _dotNetRef = default!;
 
-    private enum GameState { MainMenu, Playing, PausedLevelUp, GameOver, Codex, Login, Leaderboard }
+    private enum GameState { MainMenu, Playing, PausedLevelUp, GameOver, Codex, Leaderboard }
     private GameState _state    = GameState.MainMenu;
     private string    _codexTab = "enemies";
 
-    // Auth state
+    // Auth state — populated from portal JWT in localStorage on init
     private string? _jwtToken;
     private string? _loggedInUser;
-    private bool    _isRegistering;
-    private string  _authUsername = "";
-    private string  _authPassword = "";
-    private string? _authError;
-    private record  AuthResponse(string Token);
 
     // Leaderboard state
     private record LeaderboardEntry(string Username, int Value, int Kills, int Level, DateTime PlayedAt);
@@ -478,7 +443,7 @@
             await _inputHandler.InitAsync();
             var saved = await JS.InvokeAsync<string?>("localStorage.getItem", "bh_highscore");
             if (int.TryParse(saved, out var hs)) _highScore = hs;
-            var savedToken = await JS.InvokeAsync<string?>("localStorage.getItem", "bh_token");
+            var savedToken = await JS.InvokeAsync<string?>("localStorage.getItem", "jwt");
             if (!string.IsNullOrEmpty(savedToken))
             {
                 _jwtToken     = savedToken;
@@ -507,7 +472,6 @@
         if (_state == GameState.MainMenu      ||
             _state == GameState.Codex         ||
             _state == GameState.GameOver      ||
-            _state == GameState.Login         ||
             _state == GameState.Leaderboard   ||
             _state == GameState.PausedLevelUp) { await Render(); return; }
 
@@ -1002,34 +966,6 @@
         StateHasChanged();
     }
 
-    private async Task SubmitAuthAsync()
-    {
-        _authError = null;
-        var url = _isRegistering ? "api/auth/register" : "api/auth/login";
-        try
-        {
-            var resp = await Http.PostAsJsonAsync(url, new { username = _authUsername, password = _authPassword });
-            if (!resp.IsSuccessStatusCode)
-            {
-                _authError = await resp.Content.ReadAsStringAsync();
-                StateHasChanged();
-                return;
-            }
-            var result = await resp.Content.ReadFromJsonAsync<AuthResponse>();
-            _jwtToken     = result?.Token;
-            _loggedInUser = ParseUsernameFromJwt(_jwtToken);
-            _hudUserText  = _loggedInUser == null ? "" : $"◉ {_loggedInUser}";
-            if (!string.IsNullOrEmpty(_jwtToken))
-                await JS.InvokeVoidAsync("localStorage.setItem", "bh_token", _jwtToken);
-            _state = GameState.MainMenu;
-        }
-        catch
-        {
-            _authError = "Connection error. Is the server running?";
-        }
-        StateHasChanged();
-    }
-
     private async Task SubmitScoreAsync()
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "api/scores")
@@ -1053,15 +989,6 @@
                 _personalBest = await resp.Content.ReadFromJsonAsync<List<PersonalBestEntry>>();
         }
         catch { /* silent — the panel simply stays hidden */ }
-    }
-
-    private async Task Logout()
-    {
-        _jwtToken     = null;
-        _loggedInUser = null;
-        _hudUserText  = "";
-        await JS.InvokeVoidAsync("localStorage.removeItem", "bh_token");
-        StateHasChanged();
     }
 
     private static string? ParseUsernameFromJwt(string? token)

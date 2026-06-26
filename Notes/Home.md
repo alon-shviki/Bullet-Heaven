@@ -5,15 +5,15 @@ Top-down survival shooter. Blaze through endless enemy waves, level up, pick upg
 ## Quick Start
 
 ```bash
-cd BulletHeaven.Client && dotnet run
-# → http://localhost:5292
+# Full portal stack (recommended) — from the portal repo
+cd ~/Desktop/game && docker compose up
+# Portal → http://localhost:3000  |  BH → http://localhost:8080
 
-docker compose up --build
-# → http://localhost:8080 (full stack with PostgreSQL)
-
-dotnet test BulletHeaven.Tests
-cd e2e && npx playwright test   # requires dev server running
+# BH client only (Blazor WASM dev server, no scores/auth)
+cd BulletHeaven.Client && dotnet run   # → http://localhost:5292
 ```
+
+Auth and scores live in the portal. See [[Tech/Backend]].
 
 ## Vault Map
 

@@ -42,29 +42,24 @@ BulletHeaven.Client/          ← Blazor WASM game
   wwwroot/js/
     gameInterop.js            ← RAF bridge + key listeners (only JS file)
 
-BulletHeaven.Server/          ← ASP.NET Core API
+BulletHeaven.Server/          ← ASP.NET Core API (legacy — not deployed)
   Controllers/
-    AuthController.cs         ← POST /api/register, POST /api/login
-    ScoresController.cs       ← POST /api/scores  [Authorize]
-    LeaderboardController.cs  ← GET /api/leaderboard (public)
-  Models/
-    User.cs                   ← Id, Username, PasswordHash
-    Score.cs                  ← Id, UserId, Value, CreatedAt
-  Data/
-    AppDbContext.cs            ← EF Core DbContext (PostgreSQL)
-    AppDbContextFactory.cs    ← design-time factory for migrations
-  Program.cs                  ← DI wiring, JWT config, CORS, Swagger
+    AuthController.cs         ← was: POST /api/register, POST /api/login
+    ScoresController.cs       ← was: POST /api/scores  [Authorize]
+    LeaderboardController.cs  ← was: GET /api/leaderboard (public)
+  (replaced by portal auth server — see [[Tech/Backend]])
 
 BulletHeaven.Tests/           ← xUnit unit tests
 e2e/tests/ui-flows.spec.ts    ← Playwright E2E (UI overlays, not canvas pixels)
 ```
 
-## Client ↔ Server
+## Client ↔ Portal
 
 - Client uses `HttpClient` injected into `Game.razor`
-- JWT stored in `localStorage` via JS interop
-- Every score submit: `Authorization: Bearer <token>` header
-- CORS locked to `http://localhost:5292` in dev, nginx-proxied origin in prod
+- JWT read from `localStorage["jwt"]` (set by portal login) via JS interop
+- Score submit: `POST /api/scores` + `Authorization: Bearer <token>` → proxied by BH nginx to portal auth server
+- Leaderboard: `GET /api/leaderboard` → proxied to portal
+- No CORS needed — nginx proxy makes all calls same-origin from browser's POV
 
 ## Game Loop — JS → C# Bridge
 
