@@ -26,6 +26,16 @@
         <a href="." class="reload">Reload</a>
         <span class="dismiss">🗙</span>
     </div>
+    <script>
+      // Pick up portal JWT passed via URL hash (#portal_token=...) when opening from portal
+      (function () {
+        var m = location.hash.slice(1).match(/(?:^|&)portal_token=([^&]*)/);
+        if (m) {
+          try { localStorage.setItem('jwt', decodeURIComponent(m[1])); } catch (e) {}
+          history.replaceState(null, '', location.pathname + location.search);
+        }
+      })();
+    </script>
     <script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
     <script src="js/gameInterop.js"></script>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
