@@ -45,12 +45,15 @@ Blazor WASM (.NET 10) survival game. Canvas via `Blazor.Extensions.Canvas`; loop
 
 ## Workflow
 
-This game is managed from the portal hub (`~/Desktop/game`). For full triage across all games, use the portal. Full workflow docs: portal's `Tech/Agentic Pipeline.md` and `Tech/Scripts.md`.
+Scripts are wired into `~/.local/bin/` by `setup.sh` (run once per machine). From inside this repo the slug is auto-detected — no need to specify `bh`.
 
-For BH issues (run from portal directory):
 ```bash
-start-issue <number> bh
+bash setup.sh               # new machine: links scripts from portal into ~/.local/bin/
+start-issue <number>        # from BH root or inside a worktree — auto-detects bh
+finish-issue                # from inside the worktree when done
 ```
+
+Cross-repo triage (all games at once) is at the portal hub (`~/Desktop/game`). Full workflow docs: portal's `Tech/Agentic Pipeline.md` and `Tech/Scripts.md`.
 
 New tasks go as GitHub issues, not doc edits:
 ```bash
