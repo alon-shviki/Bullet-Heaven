@@ -1,7 +1,9 @@
-name: Build and push Docker images
+name: CI
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
 
 permissions:
@@ -9,7 +11,17 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build client
+        run: dotnet build BulletHeaven.Client/BulletHeaven.Client.csproj -c Release
+
+  push-image:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,14 +32,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push API image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: BulletHeaven.Server/Dockerfile
-          push: true
-          tags: ghcr.io/alon-shviki/bh-api:latest
 
       - name: Build and push client image
         uses: docker/build-push-action@v5

@@ -32,6 +32,25 @@ Blazor WASM (.NET 10) survival game. Canvas via `Blazor.Extensions.Canvas`; loop
 ## Skills — use for these workflows (don't improvise the procedure)
 `add-upgrade` · `add-enemy` · `verify-game` (run + browser-check the game)
 
+## Issue Triage
+
+When the user says "what should I work on", "pick an issue", or similar:
+
+1. Run `gh issue list --repo alon-shviki/Bullet-Heaven --json number,title,labels,reactions,createdAt --limit 50`
+2. Score each issue: `bug` +3, `priority:high` +3, `priority:medium` +2, `priority:low` +1, each 👍 +1, every 7 days old +1
+3. Present top 5 as a numbered list with score, labels, and one-line reason
+4. Wait for the user to pick, then implement and run `auto-pr`
+
+Whenever you would note a future task, create a GitHub issue instead of editing any doc:
+```
+gh issue create --repo alon-shviki/Bullet-Heaven --title "..." --body "..." --label "enhancement,priority:medium"
+```
+
+## Agentic Workflow
+
+Every task: branch → work → `auto-pr "description"`. Never commit directly to `main`.
+`auto-pr` is in `~/.local/bin/auto-pr` — stages, commits, pushes, opens PR. CI must pass before merge.
+
 ## Automated guardrails (hooks — don't fight them)
 - Edits to `Migrations/`, `bin/`, `obj/`, `package-lock.json` are blocked (generated files).
 - After any `.cs`/`.razor` edit, the QA pipeline is required and a **build gate** compiles the solution before you can finish — a broken build blocks completion.
