@@ -45,12 +45,18 @@ Blazor WASM (.NET 10) survival game. Canvas via `Blazor.Extensions.Canvas`; loop
 
 ## Workflow
 
-Scripts are wired into `~/.local/bin/` by `setup.sh` (run once per machine). From inside this repo the slug is auto-detected — no need to specify `bh`.
+Scripts live in the portal repo at `~/Desktop/game/.claude/scripts/` — no machine setup needed. From inside this repo the slug is auto-detected.
 
 ```bash
-bash setup.sh               # new machine: links scripts from portal into ~/.local/bin/
-start-issue <number>        # from BH root or inside a worktree — auto-detects bh
-finish-issue                # from inside the worktree when done
+# Issue work (run from BH root or any directory inside BH)
+bash ~/Desktop/game/.claude/scripts/start-issue <number>   # auto-detects bh, no slug needed
+# Then from inside the worktree:
+bash ~/Desktop/game/.claude/scripts/finish-issue
+
+# Non-issue work (docs, config)
+bash ~/Desktop/game/.claude/scripts/start-task <name>      # auto-detects bh
+# Then from inside the worktree:
+bash ~/Desktop/game/.claude/scripts/auto-pr "description"
 ```
 
 Cross-repo triage (all games at once) is at the portal hub (`~/Desktop/game`). Full workflow docs: portal's `Tech/Agentic Pipeline.md` and `Tech/Scripts.md`.
