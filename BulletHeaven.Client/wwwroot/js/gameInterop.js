@@ -1,3 +1,7 @@
+const _physicsWorker = new Worker('js/physicsWorker.js');
+_physicsWorker.onmessage = e => console.log('[physicsWorker]', e.data);
+window.postToWorker = msg => _physicsWorker.postMessage(msg);
+
 window.gameInterop = {
     _activeKeys: {},
     _spacePressedThisFrame: false,
