@@ -27,6 +27,7 @@ Auth and scores live in the portal. See [[Tech/Backend]].
 - [[Tech/Architecture]] — project layout, file map, client↔server
 - [[Tech/Performance]] — frame budget rules, pools, quadtree
 - [[Tech/Backend]] — API endpoints, auth, database schema
+- [[Tech/CI and Tests]] — CI pipeline, test suite coverage, known gaps
 
 ### Work
 - [[Tasks]] — pending tasks (WORK-001/002 remaining)
