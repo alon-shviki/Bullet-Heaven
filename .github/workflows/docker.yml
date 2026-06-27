@@ -19,6 +19,9 @@ jobs:
       - name: Build client
         run: dotnet build BulletHeaven.Client/BulletHeaven.Client.csproj -c Release
 
+      - name: Run tests
+        run: dotnet test BulletHeaven.Tests/BulletHeaven.Tests.csproj -c Release
+
   push-image:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: build
