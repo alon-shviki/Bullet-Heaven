@@ -35,3 +35,4 @@ Thumbs.db
 
 # Local Claude settings (tokens, personal overrides)
 .claude/settings.local.json
+.worktrees/

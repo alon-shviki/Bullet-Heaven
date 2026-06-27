@@ -51,6 +51,18 @@ gh issue create --repo alon-shviki/Bullet-Heaven --title "..." --body "..." --la
 Every task: branch → work → `auto-pr "description"`. Never commit directly to `main`.
 `auto-pr` is in `~/.local/bin/auto-pr` — stages, commits, pushes, opens PR. CI must pass before merge.
 
+## Auto-Issue Rule
+
+When you spot a bug, problem, performance issue, or architectural concern **outside the current task** — create a GitHub issue immediately, then continue with the task. Do not fix it inline.
+
+```bash
+gh issue create --repo alon-shviki/Bullet-Heaven --title "..." \
+  --label "bug,priority:medium" \
+  --body $'**What\'s the problem:**\n\n**Why it matters:**\n\n**Possible approaches:**'
+```
+
+Use `bug` for clear breakage, `question` for decisions/discussion, `enhancement` for improvements. Always set a priority label.
+
 ## Automated guardrails (hooks — don't fight them)
 - Edits to `Migrations/`, `bin/`, `obj/`, `package-lock.json` are blocked (generated files).
 - After any `.cs`/`.razor` edit, the QA pipeline is required and a **build gate** compiles the solution before you can finish — a broken build blocks completion.
