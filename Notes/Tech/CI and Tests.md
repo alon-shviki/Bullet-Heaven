@@ -34,6 +34,10 @@ Run locally:
 dotnet test BulletHeaven.Tests/BulletHeaven.Tests.csproj
 ```
 
+## Agent Pipeline
+
+Every `.cs`/`.razor` change goes through a mandatory sub-agent pipeline (`qa-reviewer` → `test-generator` → `docs-generator` → conditional `playwright-e2e`), defined in `.claude/rules/pipeline.md` with the agents themselves in `.claude/agents/`. This is self-contained to this repo — the portal previously kept `bh-`-prefixed copies for portal sessions, but those were reverted (portal now does the equivalent checks inline instead of spawning sub-agents). Verified 2026-07-03 that this repo's pipeline still runs standalone with those portal copies gone.
+
 ## Known Gaps
 
 - No tests for rendering (`Game.Render.cs`) — canvas calls can't be unit tested
