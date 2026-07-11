@@ -1,7 +1,7 @@
 # Architecture
 
 ## Stack
-Blazor WASM (.NET 10) client + ASP.NET Core API server. Canvas rendering via `Blazor.Extensions.Canvas`. Game loop: `requestAnimationFrame` in `gameInterop.js` → JS interop → C# tick callback. No game engine (no Unity/Godot/MonoGame).
+Blazor WASM (.NET 10) client — **client-only**, the portal auth server owns all backend concerns. Canvas rendering via `Blazor.Extensions.Canvas`. Game loop: `requestAnimationFrame` in `gameInterop.js` → JS interop → C# tick callback. No game engine (no Unity/Godot/MonoGame).
 
 ## Codebase map
 | Path | Owns |
@@ -13,8 +13,6 @@ Blazor WASM (.NET 10) client + ASP.NET Core API server. Canvas rendering via `Bl
 | `BulletHeaven.Client/Game/Upgrades/` | `UpgradeCatalogue` (weighted Common/Rare/Epic), `UpgradeDefinition` |
 | `BulletHeaven.Client/Game/Input/InputHandler.cs` | Keyboard state → normalized movement vector |
 | `BulletHeaven.Client/wwwroot/js/gameInterop.js` | RAF bridge + key listeners — the only JS file |
-| `BulletHeaven.Server/Controllers/` | `AuthController`, `ScoresController`, `LeaderboardController` |
-| `BulletHeaven.Server/Models/` + `Data/` + `Migrations/` | `User`, `Score`, EF Core DbContext (PostgreSQL) |
 | `BulletHeaven.Tests/` | xUnit unit tests |
 | `e2e/tests/ui-flows.spec.ts` | Playwright UI-flow tests (no canvas-pixel assertions) |
 
@@ -30,6 +28,6 @@ Blazor WASM (.NET 10) client + ASP.NET Core API server. Canvas rendering via `Bl
 - UI state changes go through `_state = GameState.X; StateHasChanged();`.
 - Gameplay HUD (health bar, score, FPS) is drawn on canvas in `Game.Render.cs`.
 
-## Client↔Server
-- Client calls the API with `HttpClient` (`/api/login`, `/api/register`, `/api/scores`, `/api/leaderboard`).
-- JWT stored in `localStorage` via JS interop; attached as `Authorization: Bearer` header.
+## Client↔Portal
+- Client calls `/api/scores` and `/api/leaderboard` with `HttpClient`; BH's nginx proxies them to the portal auth server (see `.claude/rules/backend.md`).
+- JWT arrives from the portal via URL hash (`#portal_token=…`), stored in `localStorage` via JS interop; attached as `Authorization: Bearer` header.

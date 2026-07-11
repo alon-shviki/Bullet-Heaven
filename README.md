@@ -59,7 +59,6 @@ Bullet-Heaven/
 │   ├── Game/                  # Core game logic (loop, physics, pools, math)
 │   ├── Pages/                 # Game.razor + Game.Render.cs
 │   └── wwwroot/               # index.html, JS interop, assets
-├── BulletHeaven.Server/       # ASP.NET Core API (auth, leaderboard)
 ├── BulletHeaven.Tests/        # xUnit unit tests
 ├── e2e/                       # Playwright browser tests
 ├── docker-compose.yml
