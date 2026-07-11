@@ -42,12 +42,7 @@ BulletHeaven.Client/          ← Blazor WASM game
   wwwroot/js/
     gameInterop.js            ← RAF bridge + key listeners (only JS file)
 
-BulletHeaven.Server/          ← ASP.NET Core API (legacy — not deployed)
-  Controllers/
-    AuthController.cs         ← was: POST /api/register, POST /api/login
-    ScoresController.cs       ← was: POST /api/scores  [Authorize]
-    LeaderboardController.cs  ← was: GET /api/leaderboard (public)
-  (replaced by portal auth server — see [[Tech/Backend]])
+(no server project — deleted July 2026; auth/scores live in the portal auth server, see [[Tech/Backend]])
 
 BulletHeaven.Tests/           ← xUnit unit tests
 e2e/tests/ui-flows.spec.ts    ← Playwright E2E (UI overlays, not canvas pixels)

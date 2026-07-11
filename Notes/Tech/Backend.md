@@ -23,9 +23,9 @@ Auth token: read from `localStorage["jwt"]` — set by the portal when the playe
 
 Score payload: `{ value, kills, level }`.
 
-## Legacy — BulletHeaven.Server
+## Legacy — BulletHeaven.Server (deleted July 2026)
 
-The server project (`BulletHeaven.Server/`) still exists in the repo with its own auth and scores controllers. It is **not deployed** — `docker-compose.yml` no longer includes a `bh-api` service. It can be deleted or repurposed later.
+The legacy server project (own auth/scores controllers, EF Core + PostgreSQL) was deleted — it duplicated the portal auth server. BH is client-only; `docker-compose.yml` builds just the client.
 
 ## Running the full stack
 

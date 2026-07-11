@@ -6,7 +6,7 @@ Spawn each step via the **Agent tool** before responding to the user.
 ## Steps
 1. **`qa-reviewer`** — pass `ORIGINAL_REQUEST`, `LANGUAGE`, `DRAFT_CODE`.
    Fix every `[FAIL]` item and re-spawn until `[PASS]`.
-   Extra flags it applies: game-loop files → heap allocations + per-entity interop; controllers → missing `[Authorize]`, unvalidated input, unhandled exceptions.
+   Extra flags it applies: game-loop files → heap allocations + per-entity interop.
 2. **`test-generator`** — pass `ORIGINAL_REQUEST`, `LANGUAGE`, `APPROVED_CODE`, `CHANGED_FILES`.
    It maintains `BulletHeaven.Tests` directly: baseline-runs the existing suite, appends tests for the new behavior to the matching `<Class>Tests.cs` (creates the file only if missing), then regression-runs everything.
    On `[TEST_FAIL]` (new defect OR old-test regression): fix the code and restart from step 1. Expect `[TESTS_PASS]` with the file path and added test names.

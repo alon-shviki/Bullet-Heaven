@@ -11,7 +11,7 @@ Blazor WASM (.NET 10) survival game. Canvas via `Blazor.Extensions.Canvas`; loop
 - Auth: user logs in at the portal (`localhost:3000`); JWT passed via URL hash (`#portal_token=...`) on game launch and stored in `localStorage["jwt"]`
 - Scores: `nginx.conf` proxies `POST /api/scores` → `portal-auth:5001/api/scores/bullet-heaven`
 - Leaderboard: `nginx.conf` proxies `GET /api/leaderboard` → `portal-auth:5001/api/leaderboard/bullet-heaven`
-- CI: `.github/workflows/docker.yml` builds and pushes `ghcr.io/alon-shviki/bh-client:latest` on every push to `main`
+- CI: `.github/workflows/ci.yml` (thin caller of the portal's reusable `dotnet-ci.yml`) builds + tests, pushes `ghcr.io/alon-shviki/bh-client:latest` + `:sha-<git-sha>` on every push to `main`
 
 ## Hard rules (always)
 - `GameState` (private enum, `Game.razor`): `MainMenu | Playing | PausedLevelUp | GameOver | Codex | Leaderboard` — loop skips updates unless `Playing`.
@@ -20,7 +20,7 @@ Blazor WASM (.NET 10) survival game. Canvas via `Blazor.Extensions.Canvas`; loop
 - Every `.cs`/`.razor` change goes through the agent pipeline before responding.
 - Do **not** add auth endpoints to BH — login is portal-only.
 - Do **not** add a scores/leaderboard DB to BH — portal owns that data.
-- `BulletHeaven.Server/` is legacy and not deployed — do not extend it.
+- There is no server project — `BulletHeaven.Server/` was deleted (July 2026); the portal owns all backend concerns.
 
 ## Read Before Working
 
