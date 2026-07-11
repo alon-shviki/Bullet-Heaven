@@ -6,10 +6,10 @@ Defined in `.github/workflows/docker.yml`. Runs on every PR and push to `main`.
 
 | Job | Trigger | What it does |
 |-----|---------|--------------|
-| `build` | every PR + push | builds client + runs full test suite |
+| `build` | every PR + push | cache NuGet → `dotnet format --verify-no-changes` → build client → run full test suite |
 | `push-image` | merge to main only | pushes `ghcr.io/alon-shviki/bh-client:latest` to GHCR |
 
-`main` is protected — PRs require `build` to pass before merge.
+`main` is protected — PRs require `build` to pass before merge. The gate includes a **formatting check**: if `dotnet format --verify-no-changes` finds unformatted code the build goes red — run `dotnet format` locally and commit before pushing. NuGet packages are cached (`actions/cache` keyed on the `.csproj` hashes) to keep the build fast.
 
 ## Test Suite
 
