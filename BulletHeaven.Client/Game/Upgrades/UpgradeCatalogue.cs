@@ -48,12 +48,12 @@ public static class UpgradeCatalogue
     public static List<UpgradeDefinition> PickThree(WeaponStats stats, Player player)
     {
         var remaining = _all.Where(u => u.IsUseful(stats, player)).ToList();
-        var picked    = new List<UpgradeDefinition>(3);
+        var picked = new List<UpgradeDefinition>(3);
 
         for (var i = 0; i < 3 && remaining.Count > 0; i++)
         {
-            var total      = remaining.Sum(u => u.Weight);
-            var roll       = Random.Shared.NextDouble() * total;
+            var total = remaining.Sum(u => u.Weight);
+            var roll = Random.Shared.NextDouble() * total;
             var cumulative = 0.0;
             foreach (var u in remaining)
             {

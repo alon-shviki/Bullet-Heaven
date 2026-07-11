@@ -4,8 +4,8 @@ public record DifficultySettings(
     string Name,
     double SpawnInterval,
     double EnemySpeed,
-    int    PlayerMaxHealth,
+    int PlayerMaxHealth,
     double InvincibilityDuration,
-    int    EnemiesPerWave,
+    int EnemiesPerWave,
     double RampRate
 );

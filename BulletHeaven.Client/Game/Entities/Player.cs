@@ -7,12 +7,12 @@ public class Player : Entity
     public override double Radius { get; set; } = 15;
     public override double Speed { get; set; } = 200; // px/sec
 
-    public int    MaxHealth    { get; private set; } = 5;
-    public int    CurrentHealth { get; private set; }
-    public bool   IsInvincible  { get; private set; }
-    public bool   IsDead        => CurrentHealth <= 0;
-    public double MagnetRange   { get; set; } = 80;
-    public int    HpRegenPerKill { get; set; } = 0;
+    public int MaxHealth { get; private set; } = 5;
+    public int CurrentHealth { get; private set; }
+    public bool IsInvincible { get; private set; }
+    public bool IsDead => CurrentHealth <= 0;
+    public double MagnetRange { get; set; } = 80;
+    public int HpRegenPerKill { get; set; } = 0;
 
     private double _invincibilityTimer;
     private double _invincibilityDuration = 1.0;
@@ -22,7 +22,7 @@ public class Player : Entity
     public void Update(double dt, double vx, double vy)
     {
         TickInvincibility(dt);
-        X = Math.Clamp(X + vx * Speed * dt, Radius, GameBounds.Width  - Radius);
+        X = Math.Clamp(X + vx * Speed * dt, Radius, GameBounds.Width - Radius);
         Y = Math.Clamp(Y + vy * Speed * dt, Radius, GameBounds.Height - Radius);
     }
 
@@ -49,9 +49,9 @@ public class Player : Entity
         IsInvincible = false;
         _invincibilityTimer = 0;
         IsAlive = true;
-        MagnetRange    = 80;
+        MagnetRange = 80;
         HpRegenPerKill = 0;
-        Speed          = 200;
+        Speed = 200;
     }
 
     private void TickInvincibility(double dt)

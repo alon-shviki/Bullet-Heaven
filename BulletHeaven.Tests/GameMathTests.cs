@@ -121,8 +121,8 @@ public class GameMathTests
     public void FindNearest_ReturnsClosestCandidate()
     {
         var near = new Circle(1, 1, 1);
-        var far  = new Circle(50, 50, 1);
-        var mid  = new Circle(10, 0, 1);
+        var far = new Circle(50, 50, 1);
+        var mid = new Circle(10, 0, 1);
 
         var result = GameMath.FindNearest(0, 0, new[] { far, near, mid });
 

@@ -4,27 +4,27 @@ namespace BulletHeaven.Client.Game.Entities;
 
 public class Projectile : Entity
 {
-    public double Vx           { get; set; }
-    public double Vy           { get; set; }
-    public int    PiercingLeft  { get; set; } = 0;
-    public int    RicochetLeft  { get; set; } = 0;
+    public double Vx { get; set; }
+    public double Vy { get; set; }
+    public int PiercingLeft { get; set; } = 0;
+    public int RicochetLeft { get; set; } = 0;
 
     public override double Radius { get; set; } = 6;
-    public override double Speed  { get; set; } = 400; // px/sec
+    public override double Speed { get; set; } = 400; // px/sec
 
     /// <summary>Re-initializes a pooled slot for firing — resets every stat a previous shot could have touched.</summary>
     public void Activate(double x, double y, double vx, double vy,
                          double speed, double radius, int piercing, int ricochet)
     {
-        X            = x;
-        Y            = y;
-        Vx           = vx;
-        Vy           = vy;
-        Speed        = speed;
-        Radius       = radius;
+        X = x;
+        Y = y;
+        Vx = vx;
+        Vy = vy;
+        Speed = speed;
+        Radius = radius;
         PiercingLeft = piercing;
         RicochetLeft = ricochet;
-        IsAlive      = true;
+        IsAlive = true;
     }
 
     public void Update(double dt)

@@ -108,9 +108,9 @@ public class EnemySpawnerTests
             var (radius, speedMult, hp) = e.Type switch
             {
                 EnemyType.Runner => (8.0, 1.5, 1),
-                EnemyType.Tank   => (20.0, 0.5, 3),
-                EnemyType.Elite  => (16.0, 1.2, 5),
-                _                => (12.0, 1.0, 1),
+                EnemyType.Tank => (20.0, 0.5, 3),
+                EnemyType.Elite => (16.0, 1.2, 5),
+                _ => (12.0, 1.0, 1),
             };
             Assert.Equal(radius, e.Radius);
             Assert.Equal(baseSpeed * speedMult, e.Speed);

@@ -35,7 +35,7 @@ public class OrbWeapon : ISecondaryWeapon
 
         for (var i = 0; i < orbCount; i++)
         {
-            var a  = _angle + 2 * Math.PI * i / orbCount;
+            var a = _angle + 2 * Math.PI * i / orbCount;
             var ox = player.X + Math.Cos(a) * stats.OrbOrbitRadius;
             var oy = player.Y + Math.Sin(a) * stats.OrbOrbitRadius;
             _positions[i] = (ox, oy);

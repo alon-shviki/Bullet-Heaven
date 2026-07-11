@@ -25,13 +25,13 @@ public class EnemySpawner
         var edge = Random.Shared.Next(4);
         var (x, y) = edge switch
         {
-            0 => (Random.Shared.NextDouble() * GameBounds.Width,  -40.0),
-            1 => (GameBounds.Width  + 40.0, Random.Shared.NextDouble() * GameBounds.Height),
-            2 => (Random.Shared.NextDouble() * GameBounds.Width,  GameBounds.Height + 40.0),
-            _ => (-40.0,                     Random.Shared.NextDouble() * GameBounds.Height),
+            0 => (Random.Shared.NextDouble() * GameBounds.Width, -40.0),
+            1 => (GameBounds.Width + 40.0, Random.Shared.NextDouble() * GameBounds.Height),
+            2 => (Random.Shared.NextDouble() * GameBounds.Width, GameBounds.Height + 40.0),
+            _ => (-40.0, Random.Shared.NextDouble() * GameBounds.Height),
         };
         boss.Activate(x, y, EnemyType.Boss, radius: 35,
-            speed:     currentEnemySpeed * 0.6,
+            speed: currentEnemySpeed * 0.6,
             maxHealth: 40, killValue: 20, xpValue: 30, scoreValue: 500);
         return true;
     }
@@ -43,18 +43,18 @@ public class EnemySpawner
         var type = PickType();
         var (radius, speedMult, hp, killVal, xpVal, scoreVal) = type switch
         {
-            EnemyType.Runner => (8.0,  1.5,  1, 1, 1,  15),
-            EnemyType.Tank   => (20.0, 0.5,  3, 2, 3,  25),
-            EnemyType.Elite  => (16.0, 1.2,  5, 5, 8,  80),
-            _                => (12.0, 1.0,  1, 1, 1,  10),
+            EnemyType.Runner => (8.0, 1.5, 1, 1, 1, 15),
+            EnemyType.Tank => (20.0, 0.5, 3, 2, 3, 25),
+            EnemyType.Elite => (16.0, 1.2, 5, 5, 8, 80),
+            _ => (12.0, 1.0, 1, 1, 1, 10),
         };
 
         var edge = Random.Shared.Next(4);
         var (x, y) = edge switch
         {
-            0 => (Random.Shared.NextDouble() * GameBounds.Width,  -20.0),
-            1 => (GameBounds.Width  + 20, Random.Shared.NextDouble() * GameBounds.Height),
-            2 => (Random.Shared.NextDouble() * GameBounds.Width,  GameBounds.Height + 20),
+            0 => (Random.Shared.NextDouble() * GameBounds.Width, -20.0),
+            1 => (GameBounds.Width + 20, Random.Shared.NextDouble() * GameBounds.Height),
+            2 => (Random.Shared.NextDouble() * GameBounds.Width, GameBounds.Height + 20),
             _ => (-20.0, Random.Shared.NextDouble() * GameBounds.Height),
         };
 
@@ -67,10 +67,10 @@ public class EnemySpawner
         var roll = Random.Shared.Next(100);
         return roll switch
         {
-            < 3  => EnemyType.Elite,
+            < 3 => EnemyType.Elite,
             < 15 => EnemyType.Tank,
             < 40 => EnemyType.Runner,
-            _    => EnemyType.Standard,
+            _ => EnemyType.Standard,
         };
     }
 }

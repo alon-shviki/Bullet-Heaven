@@ -182,15 +182,15 @@ public class GameMathClamp01Tests
 
     // Theory (happy path + boundaries): parametrised sweep of representative values.
     [Theory]
-    [InlineData(0f,    0f)]    // lower boundary
+    [InlineData(0f, 0f)]    // lower boundary
     [InlineData(0.25f, 0.25f)] // quarter
-    [InlineData(0.5f,  0.5f)]  // midpoint
+    [InlineData(0.5f, 0.5f)]  // midpoint
     [InlineData(0.75f, 0.75f)] // three-quarter
-    [InlineData(1f,    1f)]    // upper boundary
-    [InlineData(-1f,   0f)]    // below-range
-    [InlineData(2f,    1f)]    // above-range
+    [InlineData(1f, 1f)]    // upper boundary
+    [InlineData(-1f, 0f)]    // below-range
+    [InlineData(2f, 1f)]    // above-range
     [InlineData(-100f, 0f)]    // large negative
-    [InlineData(100f,  1f)]    // large positive
+    [InlineData(100f, 1f)]    // large positive
     public void Clamp01_Theory_ReturnsExpected(float input, float expected)
     {
         Assert.Equal(expected, GameMath.Clamp01(input));
