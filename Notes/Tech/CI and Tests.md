@@ -2,14 +2,14 @@
 
 ## CI Pipeline
 
-Defined in `.github/workflows/docker.yml`. Runs on every PR and push to `main`.
+`.github/workflows/ci.yml` is a **thin caller** that runs the portal's shared reusable workflow (`alon-shviki/game-portal/.github/workflows/dotnet-ci.yml@main`) with this repo's paths. The gate itself is single-source — it's defined once in the portal, not copied here. Runs on every PR and push to `main`.
 
 | Job | Trigger | What it does |
 |-----|---------|--------------|
-| `build` | every PR + push | cache NuGet → `dotnet format --verify-no-changes` → build client → run full test suite |
-| `push-image` | merge to main only | pushes `ghcr.io/alon-shviki/bh-client:latest` to GHCR |
+| `build` (reusable) | every PR + push | cache NuGet → `dotnet format --verify-no-changes` → build client → run full test suite |
+| `push-image` (reusable) | merge to main only | pushes `ghcr.io/alon-shviki/bh-client:latest` to GHCR |
 
-`main` is protected — PRs require `build` to pass before merge. The gate includes a **formatting check**: if `dotnet format --verify-no-changes` finds unformatted code the build goes red — run `dotnet format` locally and commit before pushing. NuGet packages are cached (`actions/cache` keyed on the `.csproj` hashes) to keep the build fast.
+`main` is protected — the required check is **`ci / build`** (the reusable `build` job under our caller job `ci`). The gate includes a **formatting check**: if `dotnet format --verify-no-changes` finds unformatted code the build goes red — run `dotnet format` locally and commit before pushing. NuGet packages are cached (`actions/cache` keyed on the `.csproj` hashes) to keep the build fast.
 
 ## Test Suite
 
