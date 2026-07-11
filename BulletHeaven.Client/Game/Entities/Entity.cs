@@ -12,6 +12,6 @@ public abstract class Entity : ICollidable
     public bool IsAlive { get; set; } = true;
 
     public bool IsOffScreen() =>
-        X < -Radius || X > GameBounds.Width  + Radius ||
+        X < -Radius || X > GameBounds.Width + Radius ||
         Y < -Radius || Y > GameBounds.Height + Radius;
 }

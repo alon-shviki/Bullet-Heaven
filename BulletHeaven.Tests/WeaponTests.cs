@@ -152,9 +152,9 @@ public class WeaponTests
     {
         var stats = new WeaponStats
         {
-            BulletSpeed   = 555,
-            BulletRadius  = 9,
-            Piercing      = 2,
+            BulletSpeed = 555,
+            BulletRadius = 9,
+            Piercing = 2,
             RicochetCount = 4,
         };
         var (w, player, enemies, projectiles) = Setup();

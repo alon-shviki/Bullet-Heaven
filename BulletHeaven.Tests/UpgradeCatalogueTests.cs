@@ -20,7 +20,7 @@ public class UpgradeCatalogueTests
     [Fact]
     public void PickThree_ReturnsThreeDistinctUpgrades()
     {
-        var stats  = new WeaponStats();
+        var stats = new WeaponStats();
         var player = new Player();
 
         for (var run = 0; run < 50; run++)
@@ -35,7 +35,7 @@ public class UpgradeCatalogueTests
     [Fact]
     public void PickThree_OnlyReturnsUsefulUpgrades()
     {
-        var stats  = new WeaponStats();
+        var stats = new WeaponStats();
         var player = new Player(); // full HP — "Mend" / "Full Recovery" are useless
 
         for (var run = 0; run < 50; run++)
@@ -51,7 +51,7 @@ public class UpgradeCatalogueTests
     [Fact]
     public void PickThree_FullHealthPlayer_NeverOffersHeals()
     {
-        var stats  = new WeaponStats();
+        var stats = new WeaponStats();
         var player = new Player();
 
         for (var run = 0; run < 50; run++)
@@ -66,9 +66,9 @@ public class UpgradeCatalogueTests
     [Fact]
     public void Mend_IsUsefulOnlyWhenHurt()
     {
-        var stats  = new WeaponStats();
+        var stats = new WeaponStats();
         var player = new Player();
-        var mend   = Find("Mend");
+        var mend = Find("Mend");
 
         Assert.False(mend.IsUseful(stats, player));
 
@@ -111,7 +111,7 @@ public class UpgradeCatalogueTests
     [Fact]
     public void FireRateUpgrades_RespectTheFloor()
     {
-        var stats  = new WeaponStats();
+        var stats = new WeaponStats();
         var player = new Player();
         var gatling = Find("Gatling");
 

@@ -29,12 +29,12 @@ public class ParticleSystem
             if (p is null) return; // pool saturated — drop the rest of the burst
             var angle = Random.Shared.NextDouble() * Math.PI * 2;
             var speed = 80 + Random.Shared.NextDouble() * 80;
-            p.X      = x;
-            p.Y      = y;
-            p.Vx     = Math.Cos(angle) * speed;
-            p.Vy     = Math.Sin(angle) * speed;
-            p.Life   = 1.0;
-            p.Color  = color;
+            p.X = x;
+            p.Y = y;
+            p.Vx = Math.Cos(angle) * speed;
+            p.Vy = Math.Sin(angle) * speed;
+            p.Life = 1.0;
+            p.Color = color;
             p.Radius = 2 + Random.Shared.NextDouble() * 2;
         }
     }
@@ -45,8 +45,8 @@ public class ParticleSystem
         {
             var p = _particles[i];
             if (p.Life <= 0) continue;
-            p.X    += p.Vx * dt;
-            p.Y    += p.Vy * dt;
+            p.X += p.Vx * dt;
+            p.Y += p.Vy * dt;
             p.Life -= dt * 2.5;
         }
     }

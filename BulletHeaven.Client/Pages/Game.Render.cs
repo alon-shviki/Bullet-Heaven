@@ -61,7 +61,7 @@ public partial class Game
             double px = x + r * Math.Cos(a);
             double py = y + r * Math.Sin(a);
             if (i == 0) await _ctx.MoveToAsync(px, py);
-            else        await _ctx.LineToAsync(px, py);
+            else await _ctx.LineToAsync(px, py);
         }
         await _ctx.ClosePathAsync();
         await _ctx.FillAsync();
@@ -96,7 +96,7 @@ public partial class Game
             double px = x + r * Math.Cos(a);
             double py = y + r * Math.Sin(a);
             if (k == 0) await _ctx.MoveToAsync(px, py);
-            else        await _ctx.LineToAsync(px, py);
+            else await _ctx.LineToAsync(px, py);
         }
         await _ctx.ClosePathAsync();
         await _ctx.FillAsync();
@@ -125,7 +125,7 @@ public partial class Game
             double px = x + r * Math.Cos(a);
             double py = y + r * Math.Sin(a);
             if (i == 0) await _ctx.MoveToAsync(px, py);
-            else        await _ctx.LineToAsync(px, py);
+            else await _ctx.LineToAsync(px, py);
         }
         await _ctx.ClosePathAsync();
         await _ctx.FillAsync();
@@ -141,7 +141,7 @@ public partial class Game
             double px = x + ri * Math.Cos(a);
             double py = y + ri * Math.Sin(a);
             if (i == 0) await _ctx.MoveToAsync(px, py);
-            else        await _ctx.LineToAsync(px, py);
+            else await _ctx.LineToAsync(px, py);
         }
         await _ctx.ClosePathAsync();
         await _ctx.SetLineWidthAsync(2);
@@ -190,7 +190,7 @@ public partial class Game
             double px = x + r * Math.Cos(a);
             double py = y + r * Math.Sin(a);
             if (k == 0) await _ctx.MoveToAsync(px, py);
-            else        await _ctx.LineToAsync(px, py);
+            else await _ctx.LineToAsync(px, py);
         }
         await _ctx.ClosePathAsync();
         await _ctx.FillAsync();
@@ -233,7 +233,7 @@ public partial class Game
             double px = x + r * Math.Cos(a);
             double py = y + r * Math.Sin(a);
             if (k == 0) await _ctx.MoveToAsync(px, py);
-            else        await _ctx.LineToAsync(px, py);
+            else await _ctx.LineToAsync(px, py);
         }
         await _ctx.ClosePathAsync();
         await _ctx.FillAsync();
@@ -301,8 +301,8 @@ public partial class Game
             await DrawBoss(0, 0);
             await _ctx.RestoreAsync();
         }
-        else if (e.Type == EnemyType.Tank)   await DrawTank(e.X, e.Y);
-        else if (e.Type == EnemyType.Runner)  await DrawRunner(e.X, e.Y);
-        else                                  await DrawStandard(e.X, e.Y);
+        else if (e.Type == EnemyType.Tank) await DrawTank(e.X, e.Y);
+        else if (e.Type == EnemyType.Runner) await DrawRunner(e.X, e.Y);
+        else await DrawStandard(e.X, e.Y);
     }
 }

@@ -15,9 +15,9 @@ public class PulseWeapon : ISecondaryWeapon
         _timer -= dt;
         if (_timer > 0) return 0;
 
-        _timer     = stats.PulseInterval;
+        _timer = stats.PulseInterval;
         JustPulsed = true;
-        var kills  = 0;
+        var kills = 0;
 
         var slots = enemies.Slots;
         for (var i = 0; i < slots.Length; i++)

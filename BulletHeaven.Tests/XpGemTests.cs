@@ -35,13 +35,13 @@ public class XpGemTests
     public void Update_CloserGem_MovesFasterThanFartherGem()
     {
         var close = new XpGem { X = 60, Y = 0 }; // 20px from player
-        var far   = new XpGem { X = 10, Y = 0 }; // 70px from player
+        var far = new XpGem { X = 10, Y = 0 }; // 70px from player
 
         close.Update(0.01, px: 80, py: 0, magnetRange: 80);
         far.Update(0.01, px: 80, py: 0, magnetRange: 80);
 
         var closeMoved = close.X - 60;
-        var farMoved   = far.X - 10;
+        var farMoved = far.X - 10;
         Assert.True(closeMoved > farMoved, "attraction speed must increase as the gem gets closer");
     }
 
