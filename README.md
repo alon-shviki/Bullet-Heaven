@@ -108,7 +108,7 @@ The primary weapon fires automatically and supports split shot (2–3 bullets), 
 - **Combo multiplier** — kill streaks within 3 s stack a combo (1.5× at 5, 2× at 10, 3× at 20) that multiplies score.
 - **Screen shake** — triggered on player damage; decays over 0.25 s via canvas translate jitter.
 
-> **Pending:** Web Worker physics offload (moving the update/collision step off the main thread) is planned but not yet implemented — see GitHub issues #4/#5.
+> **Pending:** the Web Worker scaffold (`physicsWorker.js`, handshake message) is in place, but physics and collision still run on the main thread — delegating the actual update/collision step to the worker is tracked in GitHub issue #5.
 
 ## CI / Deployment
 
