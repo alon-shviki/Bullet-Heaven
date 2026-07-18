@@ -108,8 +108,6 @@ The primary weapon fires automatically and supports split shot (2–3 bullets), 
 - **Combo multiplier** — kill streaks within 3 s stack a combo (1.5× at 5, 2× at 10, 3× at 20) that multiplies score.
 - **Screen shake** — triggered on player damage; decays over 0.25 s via canvas translate jitter.
 
-> **Pending:** the Web Worker scaffold (`physicsWorker.js`, handshake message) is in place, but physics and collision still run on the main thread — delegating the actual update/collision step to the worker is tracked in GitHub issue #5.
-
 ## CI / Deployment
 
 `.github/workflows/ci.yml` is a thin caller of the portal's shared reusable workflow (`alon-shviki/game-portal/.github/workflows/dotnet-ci.yml@main`): cache NuGet → `dotnet format --verify-no-changes` → build → test, and on push to `main`, pushes `ghcr.io/alon-shviki/bh-client:latest` (+ sha tag). Required check: `ci / build`. E2E (Playwright) tests exist but aren't wired into CI yet.
