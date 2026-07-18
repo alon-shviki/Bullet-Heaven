@@ -9,14 +9,13 @@ Applies to: `GameLoop`, `Game.Render.cs`, everything in `Game/Entities/`, and an
 - **Delta time everywhere.** All movement/timers scale by `dt` — never assume 60 fps.
 - Culling: off-screen projectiles must be deactivated, not leaked.
 
-## Current reality (do not assume otherwise)
-- Collision is brute-force O(N²) circle-vs-circle over `List<T>`.
-- There is **no** BulletPool, EnemyPool, Quadtree, or Web Worker yet — these are pending tasks POOL-001/002, QUAD-001/002, WORK-001/002 in `tasks.md`.
+## Current reality
+- Collision runs through `Quadtree` (`Game/Collision/Quadtree.cs`) — cleared and rebuilt from active enemies every frame, queried per projectile so only nearby candidates get the circle check. Not brute-force O(N²).
+- `BulletPool` (500) and `EnemyPool` (1000) are pre-allocated; spawn activates an inactive slot, kill flips `Active` — zero `new` during gameplay.
+- A Web Worker scaffold exists (`wwwroot/js/physicsWorker.js`, handshake message only), but physics and collision still run on the main thread. Delegating the actual update/collision step to the worker is the one remaining perf task — WORK-002, issue #5.
 
-## When implementing the pending perf tasks
-- **Pools:** fixed-size pre-allocated arrays (≈500 bullets, ≈1000 enemies); spawn = activate an inactive slot, kill = flip `Active` flag. Zero `new` during gameplay.
-- **Quadtree:** `Clear()` + rebuild from scratch every frame from active enemies; query per projectile, then circle-check only the candidates.
-- **Web Worker:** physics + quadtree run in `physicsWorker.js`; main thread sends input/timing via `postMessage` and only renders the returned coordinate payload.
+## When implementing WORK-002 (Web Worker physics)
+- Physics + Quadtree move into `physicsWorker.js`; main thread sends input/timing via `postMessage` and only renders the returned coordinate payload.
 
 ## Verifying
 Profile with Chrome DevTools (Performance tab) — watch for GC sawtooth in the memory graph and long scripting blocks during heavy waves.
