@@ -114,6 +114,45 @@ The primary weapon fires automatically and supports split shot (2–3 bullets), 
 
 `.github/workflows/ci.yml` is a thin caller of the portal's shared reusable workflow (`alon-shviki/game-portal/.github/workflows/dotnet-ci.yml@main`): cache NuGet → `dotnet format --verify-no-changes` → build → test, and on push to `main`, pushes `ghcr.io/alon-shviki/bh-client:latest` (+ sha tag). Required check: `ci / build`. E2E (Playwright) tests exist but aren't wired into CI yet.
 
+## Claude Code Setup
+
+Developed primarily with [Claude Code](https://docs.claude.com/en/docs/claude-code), combining the portal's shared pipeline with a pipeline of its own for game code.
+
+**`CLAUDE.md`** carries the stack commands, the portal integration contract, the hard rules (client-only — no auth or DB in this repo), and the Game Context Rule pointer that `start-issue` prints when work begins here.
+
+**`.claude/rules/`**:
+
+- `architecture.md` — the codebase map, the `GameState` machine, and the client↔portal data flow
+- `backend.md` — why there's no backend in this repo (the portal owns it)
+- `performance.md` — the per-frame rules (no heap allocations, no LINQ, no per-entity JS interop) and the current performance reality
+- `pipeline.md` — the agent pipeline below, and when each step runs
+
+**`.claude/agents/`** is a real 4-step pipeline that runs on every `.cs`/`.razor` change:
+
+- `qa-reviewer` — reviews drafted code against the original request line by line; fails on any concrete issue (logic bugs, security flaws, performance traps) before anything is shown to the user
+- `test-generator` — maintains `BulletHeaven.Tests`, appending tests for new behavior and regression-running the whole suite
+- `docs-generator` — writes the documentation block that becomes the final response
+- `playwright-e2e` — runs browser-level UI-flow tests against the live dev server, but only when a `.razor` file or `Game.Render.cs` changed
+
+This repo's game-loop code is intricate enough that isolated review/test/doc passes earn their keep — `.claude/rules/pipeline.md` has the full sequencing.
+
+**`.claude/skills/`**:
+
+- `add-enemy` — scaffolds a new enemy type, including the codex card and preview
+- `add-upgrade` — scaffolds a new upgrade catalogue entry, including stat wiring and weight conventions
+- `verify-game` — builds, runs, and visually verifies the game in a real browser after gameplay/UI changes
+- `playwright-cli` — drives browser automation for the Playwright test suite
+- `ci-cd` — the CI/CD mental model shared across the three repos
+- `obsidian-vault` — finds, creates, and organizes notes in this repo's vault
+
+**`.claude/settings.json` hooks**: `PreToolUse` blocks hand-edits to generated files (`Migrations/`, `bin/`, `obj/`, `package-lock.json`); `PostToolUse` flags any `.cs`/`.razor` edit as requiring the agent pipeline above; a `Stop` hook recompiles the whole solution and blocks the session from finishing on a broken build.
+
+## Obsidian
+
+`Notes/` is this repo's own vault. `Home.md` is the quick-start dashboard, `Tasks.md` tracks the build-out task list, `Design/` holds the game-design notes (`Core Loop.md`, `Entities.md`, `Difficulty.md`, `Weapons & Upgrades.md`), and `Tech/` holds the engineering notes (`Architecture.md`, `Performance.md`, `Backend.md`, `CI and Tests.md`, `Web Worker.md`).
+
+It's symlinked into the portal vault at `~/Desktop/game/Games/Bullet-Heaven`, so the same notes are browsable and editable from either vault — nothing is duplicated between them.
+
 ## Contributing
 
 1. Work happens in a worktree via the portal's agentic scripts — never commit directly to `main`:
